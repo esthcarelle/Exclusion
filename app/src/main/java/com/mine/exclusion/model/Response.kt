@@ -6,8 +6,8 @@ data class Response(
 )
 
 data class ExclusionsItemItem(
-	val optionsId: String? = null,
-	val facilityId: String? = null
+	val options_id: String? = null,
+	val facility_id: String? = null
 )
 
 data class OptionsItem(
@@ -19,6 +19,6 @@ data class OptionsItem(
 data class FacilitiesItem(
 	val name: String? = null,
 	val options: List<OptionsItem?>? = null,
-	val facilityId: String? = null
+	val facility_id: String? = null
 )
 

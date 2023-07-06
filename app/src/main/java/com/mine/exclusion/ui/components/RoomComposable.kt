@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +41,7 @@ fun RoomComposable(vm: RoomViewModel) {
             .background(Color.Black)
     ) {
         vm.roomsList.facilities?.let {
-            items(it) { room ->
+            itemsIndexed(it) {i, room ->
                 room?.name?.let { it1 ->
                     Text(
                         text = it1,
@@ -51,14 +55,17 @@ fun RoomComposable(vm: RoomViewModel) {
                         textAlign = TextAlign.Center
                     )
                 }
+                val selectedValue = remember { mutableStateOf("") }
 
                 LazyRow {
                     room?.options?.let { options ->
-                        items(options) { optionItem ->
+                        itemsIndexed(options) {
+                                index, optionItem ->
+
                             Row(modifier = Modifier
                                 .wrapContentSize()
                                 .padding(horizontal = 16.dp)) {
-                                optionItem?.name + "png"
+
                                 Image(
                                     modifier = Modifier.size(100.dp),
                                     painter = painterResource(
@@ -69,6 +76,15 @@ fun RoomComposable(vm: RoomViewModel) {
                                     ),
                                     contentDescription = ""
                                 )
+                                RadioButton(
+                                    enabled = vm.isEnabled(vm.roomsList.exclusions?.get(i), facilityId = room?.facility_id , optionId = optionItem?.id),
+                                    selected = selectedValue.value == optionItem?.name,
+                                    onClick = { selectedValue.value = optionItem?.name.toString() },
+                                    modifier = Modifier.padding(end = 8.dp)
+                                        .fillMaxSize()
+                                        .align(Alignment.CenterVertically)
+                                )
+
                                 Text(
                                     text = optionItem?.name.toString(),
                                     color = Color.White,
@@ -90,7 +106,7 @@ fun getDrawable(name: String?, context: Context): Int {
         R.drawable.no_room
     } else
         context.resources.getIdentifier(
-            name?.toLowerCase(),
+            name,
             "drawable",
             context.packageName
         )
