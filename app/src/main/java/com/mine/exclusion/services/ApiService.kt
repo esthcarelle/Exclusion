@@ -1,10 +1,9 @@
-package com.mine.exclusion
+package com.mine.exclusion.services
 
+import com.mine.exclusion.model.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
 
 const val BASE_URL = "https://my-json-server.typicode.com/"
 

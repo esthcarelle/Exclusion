@@ -7,8 +7,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mine.exclusion.APIService
-import com.mine.exclusion.Response
+import com.mine.exclusion.services.APIService
+import com.mine.exclusion.model.Response
 import kotlinx.coroutines.launch
 
 class RoomViewModel : ViewModel() {

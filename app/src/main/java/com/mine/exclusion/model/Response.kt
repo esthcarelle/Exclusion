@@ -1,4 +1,4 @@
-package com.mine.exclusion
+package com.mine.exclusion.model
 
 data class Response(
 	val exclusions: List<List<ExclusionsItemItem?>?>? = null,
