@@ -83,7 +83,7 @@ fun RoomComposable(vm: RoomViewModel) {
                                 )
 
                                 RadioButton(
-                                    enabled = vm.isEnabled(vm.roomsList.exclusions?.get(i), facilityId = room?.facility_id , optionId = optionItem?.id),
+                                    enabled = vm.isEnabled(vm.roomsList.exclusions?.get(i), facilityId = room?.facility_id , optionId = optionItem?.id,selectedItems),
                                     selected = selectedId.value == optionItem?.id,
                                     onClick = { selectedId.value = optionItem?.id.toString()
                                         selectedItems[room?.facility_id.toString()] = optionItem?.name.toString()
