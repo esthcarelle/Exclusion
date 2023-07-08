@@ -1,6 +1,9 @@
 package com.mine.exclusion.ui.components
 
+import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -10,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -35,6 +37,8 @@ import com.mine.exclusion.viewModel.RoomViewModel
 fun RoomComposable(vm: RoomViewModel) {
     val context = LocalContext.current
 
+    val selectedItems = hashMapOf<String,String>()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -56,6 +60,7 @@ fun RoomComposable(vm: RoomViewModel) {
                     )
                 }
                 val selectedValue = remember { mutableStateOf("") }
+                val selectedId = remember { mutableStateOf("0") }
 
                 LazyRow {
                     room?.options?.let { options ->
@@ -76,11 +81,16 @@ fun RoomComposable(vm: RoomViewModel) {
                                     ),
                                     contentDescription = ""
                                 )
+
                                 RadioButton(
                                     enabled = vm.isEnabled(vm.roomsList.exclusions?.get(i), facilityId = room?.facility_id , optionId = optionItem?.id),
-                                    selected = selectedValue.value == optionItem?.name,
-                                    onClick = { selectedValue.value = optionItem?.name.toString() },
-                                    modifier = Modifier.padding(end = 8.dp)
+                                    selected = selectedId.value == optionItem?.id,
+                                    onClick = { selectedId.value = optionItem?.id.toString()
+                                        selectedItems[room?.facility_id.toString()] = optionItem?.name.toString()
+
+                                              },
+                                    modifier = Modifier
+                                        .padding(end = 8.dp)
                                         .fillMaxSize()
                                         .align(Alignment.CenterVertically)
                                 )
@@ -101,6 +111,7 @@ fun RoomComposable(vm: RoomViewModel) {
     }
 }
 
+@SuppressLint("DiscouragedApi")
 fun getDrawable(name: String?, context: Context): Int {
     return if (name == "no-room") {
         R.drawable.no_room

@@ -22,16 +22,18 @@ class RoomViewModel : ViewModel() {
         getRooms()
     }
 
-    fun isEnabled(exclusions: List<ExclusionsItemItem?>?,facilityId: String?,optionId: String?): Boolean{
-        if (exclusions != null) {
-            for(i in exclusions){
-                if (i != null) {
-                        if(i!!.facility_id == facilityId && i.options_id == optionId){
-                            return false
-                        }
-                }
-            }
-        }
+    fun isEnabled(exclusions: List<ExclusionsItemItem?>?,facilityId: String?,optionId: String?,selectedItems:HashMap<String,String>): Boolean{
+//        if (exclusions != null) {
+//            for(i in exclusions){
+//                if (i != null) {
+//                        if(i.facility_id == facilityId && i.options_id == optionId){
+//                            return false
+//                        }
+//                }
+//            }
+//        }
+
+
         return true
     }
     private fun getRooms() {
