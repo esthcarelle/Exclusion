@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mine.exclusion.R
+import com.mine.exclusion.model.OptionsItem
 import com.mine.exclusion.viewModel.RoomViewModel
 
 
@@ -37,7 +39,7 @@ import com.mine.exclusion.viewModel.RoomViewModel
 fun RoomComposable(vm: RoomViewModel) {
     val context = LocalContext.current
 
-    val selectedItems = hashMapOf<String,String>()
+    val selectedItems = hashMapOf<String, OptionsItem>()
 
     LazyColumn(
         modifier = Modifier
@@ -45,7 +47,7 @@ fun RoomComposable(vm: RoomViewModel) {
             .background(Color.Black)
     ) {
         vm.roomsList.facilities?.let {
-            itemsIndexed(it) {i, room ->
+            itemsIndexed(it) { i, room ->
                 room?.name?.let { it1 ->
                     Text(
                         text = it1,
@@ -60,16 +62,19 @@ fun RoomComposable(vm: RoomViewModel) {
                     )
                 }
                 val selectedValue = remember { mutableStateOf("") }
-                val selectedId = remember { mutableStateOf("0") }
+                val selectedId = remember { mutableStateOf("") }
+
+                val context = LocalContext.current
 
                 LazyRow {
                     room?.options?.let { options ->
-                        itemsIndexed(options) {
-                                index, optionItem ->
+                        itemsIndexed(options) { index, optionItem ->
 
-                            Row(modifier = Modifier
-                                .wrapContentSize()
-                                .padding(horizontal = 16.dp)) {
+                            Row(
+                                modifier = Modifier
+                                    .wrapContentSize()
+                                    .padding(horizontal = 16.dp)
+                            ) {
 
                                 Image(
                                     modifier = Modifier.size(100.dp),
@@ -83,12 +88,20 @@ fun RoomComposable(vm: RoomViewModel) {
                                 )
 
                                 RadioButton(
-                                    enabled = vm.isEnabled(vm.roomsList.exclusions?.get(i), facilityId = room?.facility_id , optionId = optionItem?.id,selectedItems),
+                                    enabled = true,
                                     selected = selectedId.value == optionItem?.id,
-                                    onClick = { selectedId.value = optionItem?.id.toString()
-                                        selectedItems[room?.facility_id.toString()] = optionItem?.name.toString()
-
-                                              },
+                                    onClick = {
+                                        if (vm.isEnabled(
+                                                vm.roomsList.exclusions,
+                                                facilityId = room?.facility_id,
+                                                optionId = optionItem,
+                                                selectedItems
+                                            )
+                                        )
+                                            selectedId.value = optionItem?.id.toString()
+                                        else
+                                            Toast.makeText(context, "Not Allowed", Toast.LENGTH_SHORT).show()
+                                    },
                                     modifier = Modifier
                                         .padding(end = 8.dp)
                                         .fillMaxSize()
