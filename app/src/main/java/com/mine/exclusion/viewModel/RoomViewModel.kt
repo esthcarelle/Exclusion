@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mine.exclusion.model.ExclusionsItemItem
+import com.mine.exclusion.model.ExclusionsItem
 import com.mine.exclusion.model.OptionsItem
 import com.mine.exclusion.services.APIService
 import com.mine.exclusion.model.Response
@@ -19,68 +19,25 @@ class RoomViewModel : ViewModel() {
     val roomsList: Response
         get() = _roomsList
 
-    val selectedOptions = mutableMapOf<String, OptionsItem>()
-
     init {
         getRooms()
-    }
-
-    fun isExcluded(option: OptionsItem): Boolean {
-        _roomsList.exclusions?.forEach { exclusion ->
-            exclusion?.forEach {
-                if (selectedOptions[it?.facility_id]?.id == it?.options_id) {
-                    val excludedFacility =
-                        _roomsList.facilities?.find { facilitiesItem -> facilitiesItem?.facility_id == it?.facility_id }
-                    return excludedFacility != null && excludedFacility.options?.any { optionsItem -> optionsItem?.id == option.id } ?: false
-                }
-            }
-
-
-        }
-        return false
-    }
-
-    fun selectOption(facilityId: String, optionId: String) {
-        // Find the facility and option based on the IDs
-        val facility = _roomsList.facilities?.find { it?.facility_id == facilityId }
-        val option = facility?.options?.find { it?.id == optionId }
-
-        // If the option is excluded, return without selecting it
-        if (option != null && isExcluded(option)) {
-            println("Option ${option.name} is excluded.")
-            return
-        }
-
-        // Remove the previously selected option for the same facility
-        selectedOptions.remove(facilityId)
-
-        // Select the new option
-        if (option != null) {
-            selectedOptions[facilityId] = option
-            println("Option ${option.name} selected.")
-        } else {
-            println("Invalid option.")
-        }
+        calculateOranges(9,3)
+        solveEquation(18,14)
     }
 
     fun isEnabled(
-        exclusionList: List<List<ExclusionsItemItem?>?>?,
         facilityId: String?,
         optionId: OptionsItem?,
         selectedItems: HashMap<String, OptionsItem>
     ): Boolean {
-        if (exclusionList != null) {
-            for (exclusions in exclusionList) {
+        if (_roomsList.exclusions != null) {
+            for (exclusions in _roomsList.exclusions!!) {
                 val exclusion =
                     exclusions?.find { it?.facility_id == facilityId && it?.options_id == optionId?.id }
-
-                if (exclusion == null) {
-                    selectedItems[facilityId.toString()] = optionId!!
-                    return true
-                } else {
-                    for (i in selectedItems) {
-                        val exclu = ExclusionsItemItem(i.value.id, i.key)
-                        if (exclusions.contains(exclu) && exclusions.contains(exclusion)) {
+                for (i in selectedItems) {
+                    val excl = ExclusionsItem(i.value.id, i.key)
+                    if (exclusions != null) {
+                        if (exclusions.contains(excl) && exclusions.contains(exclusion)) {
                             return false
                         }
                     }
@@ -106,5 +63,45 @@ class RoomViewModel : ViewModel() {
                 Log.e(ContentValues.TAG, "getImages: " + errorMessage)
             }
         }
+    }
+
+    fun calculateOranges(total:Int, difference:Int){
+
+        var maxwell = 0;
+        var x = 0
+
+        var gerald = maxwell + difference
+
+        x = maxwell + gerald
+        x = total
+
+        maxwell = gerald - difference
+        maxwell = x - gerald
+
+//        x - gerald = gerald - difference
+//        2 * gerald = x + difference
+
+        gerald = (difference + x)/2
+
+        maxwell = x - gerald
+
+        println("Maxwell has $maxwell oranges and Gerald has $gerald oranges.")
+
+    }
+    fun solveEquation(x: Int,y: Int){
+
+        var a = 0
+        var b = 0
+
+        // b = 18 - 6a
+        // b = 14 - 4a
+
+        // 18 - 6a = 14 - 4a
+        // -2a = 14 - 18
+
+        a = (y - x)/-2
+        b = x - (6*a)
+
+        println("a is $a and b is $b")
     }
 }

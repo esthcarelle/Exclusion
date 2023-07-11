@@ -1,11 +1,11 @@
 package com.mine.exclusion.model
 
 data class Response(
-	val exclusions: List<List<ExclusionsItemItem?>?>? = null,
+	val exclusions: List<List<ExclusionsItem?>?>? = null,
 	val facilities: List<FacilitiesItem?>? = null
 )
 
-data class ExclusionsItemItem(
+data class ExclusionsItem(
 	val options_id: String? = null,
 	val facility_id: String? = null
 )

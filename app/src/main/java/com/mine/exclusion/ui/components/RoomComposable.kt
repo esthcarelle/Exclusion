@@ -92,7 +92,6 @@ fun RoomComposable(vm: RoomViewModel) {
                                     selected = selectedId.value == optionItem?.id,
                                     onClick = {
                                         if (vm.isEnabled(
-                                                vm.roomsList.exclusions,
                                                 facilityId = room?.facility_id,
                                                 optionId = optionItem,
                                                 selectedItems
