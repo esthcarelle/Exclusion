@@ -1,9 +1,7 @@
 package com.mine.exclusion.ui.components
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,7 +35,6 @@ import com.mine.exclusion.viewModel.RoomViewModel
 
 @Composable
 fun RoomComposable(vm: RoomViewModel) {
-    val context = LocalContext.current
 
     val selectedItems = hashMapOf<String, OptionsItem>()
 
@@ -47,7 +44,7 @@ fun RoomComposable(vm: RoomViewModel) {
             .background(Color.Black)
     ) {
         vm.roomsList.facilities?.let {
-            itemsIndexed(it) { i, room ->
+            itemsIndexed(it) { _, room ->
                 room?.name?.let { it1 ->
                     Text(
                         text = it1,
@@ -61,14 +58,14 @@ fun RoomComposable(vm: RoomViewModel) {
                         textAlign = TextAlign.Center
                     )
                 }
-                val selectedValue = remember { mutableStateOf("") }
+
                 val selectedId = remember { mutableStateOf("") }
 
                 val context = LocalContext.current
 
                 LazyRow {
                     room?.options?.let { options ->
-                        itemsIndexed(options) { index, optionItem ->
+                        itemsIndexed(options) { _, optionItem ->
 
                             Row(
                                 modifier = Modifier
@@ -92,14 +89,18 @@ fun RoomComposable(vm: RoomViewModel) {
                                     selected = selectedId.value == optionItem?.id,
                                     onClick = {
                                         if (vm.isEnabled(
-                                                facilityId = room?.facility_id,
+                                                facilityId = room.facility_id,
                                                 optionId = optionItem,
                                                 selectedItems
                                             )
                                         )
                                             selectedId.value = optionItem?.id.toString()
                                         else
-                                            Toast.makeText(context, "Not Allowed", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                context,
+                                                "Not Allowed",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                     },
                                     modifier = Modifier
                                         .padding(end = 8.dp)

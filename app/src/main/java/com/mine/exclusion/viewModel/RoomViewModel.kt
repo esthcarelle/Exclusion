@@ -14,15 +14,13 @@ import com.mine.exclusion.model.Response
 import kotlinx.coroutines.launch
 
 class RoomViewModel : ViewModel() {
-    private var _roomsList by mutableStateOf<Response>(Response())
+    private var _roomsList by mutableStateOf(Response())
     private var errorMessage: String by mutableStateOf("")
     val roomsList: Response
         get() = _roomsList
 
     init {
         getRooms()
-        calculateOranges(9,3)
-        solveEquation(18,14)
     }
 
     fun isEnabled(
@@ -56,52 +54,12 @@ class RoomViewModel : ViewModel() {
 
                 _roomsList = list
 
-                Log.e(ContentValues.TAG, "getImages: " + _roomsList)
+                Log.e(ContentValues.TAG, "getImages: $_roomsList")
 
             } catch (e: Exception) {
                 errorMessage = e.message.toString()
-                Log.e(ContentValues.TAG, "getImages: " + errorMessage)
+                Log.e(ContentValues.TAG, "getImages: $errorMessage")
             }
         }
-    }
-
-    fun calculateOranges(total:Int, difference:Int){
-
-        var maxwell = 0;
-        var x = 0
-
-        var gerald = maxwell + difference
-
-        x = maxwell + gerald
-        x = total
-
-        maxwell = gerald - difference
-        maxwell = x - gerald
-
-//        x - gerald = gerald - difference
-//        2 * gerald = x + difference
-
-        gerald = (difference + x)/2
-
-        maxwell = x - gerald
-
-        println("Maxwell has $maxwell oranges and Gerald has $gerald oranges.")
-
-    }
-    fun solveEquation(x: Int,y: Int){
-
-        var a = 0
-        var b = 0
-
-        // b = 18 - 6a
-        // b = 14 - 4a
-
-        // 18 - 6a = 14 - 4a
-        // -2a = 14 - 18
-
-        a = (y - x)/-2
-        b = x - (6*a)
-
-        println("a is $a and b is $b")
     }
 }
