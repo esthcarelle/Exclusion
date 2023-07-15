@@ -21,6 +21,7 @@ class RoomViewModel : ViewModel() {
 
     init {
         getRooms()
+        solveEquation(x = 18, y = 14, coeffA = -6, coeffB = -4)
     }
 
     fun isEnabled(
@@ -61,5 +62,44 @@ class RoomViewModel : ViewModel() {
                 Log.e(ContentValues.TAG, "getImages: $errorMessage")
             }
         }
+    }
+    fun calculateOranges(total:Int, difference:Int){
+
+        var maxwell = 0;
+        var x = 0
+
+        var gerald = maxwell + difference
+
+        x = maxwell + gerald
+        x = total
+
+        maxwell = gerald - difference
+        maxwell = x - gerald
+
+//        x - gerald = gerald - difference
+//        2 * gerald = x + difference
+
+        gerald = (difference + x)/2
+
+        maxwell = x - gerald
+
+        println("Maxwell has $maxwell oranges and Gerald has $gerald oranges.")
+
+    }
+    fun solveEquation(x: Int,y: Int,coeffA: Int,coeffB: Int){
+
+        var a = 0
+        var b = 0
+
+        // b = 18 - 6a
+        // b = 14 - 4a
+
+        // 18 - 6a = 14 - 4a
+        // (-6+4)a = 14 - 18
+
+        a = (y - x)/(coeffB - coeffA)
+        b = x - (coeffA*a)
+
+        println("a is $a and b is $b")
     }
 }
