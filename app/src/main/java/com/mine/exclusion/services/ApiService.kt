@@ -14,12 +14,10 @@ interface APIService {
     companion object {
         private lateinit var apiService: APIService
         fun getInstance(): APIService {
-            if (apiService == null) {
                 apiService = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build().create(APIService::class.java)
-            }
             return apiService
         }
     }
