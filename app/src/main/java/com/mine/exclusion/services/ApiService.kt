@@ -12,7 +12,7 @@ interface APIService {
     suspend fun getRooms(): Response
 
     companion object {
-        var apiService: APIService? = null
+        private lateinit var apiService: APIService
         fun getInstance(): APIService {
             if (apiService == null) {
                 apiService = Retrofit.Builder()
@@ -20,7 +20,7 @@ interface APIService {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build().create(APIService::class.java)
             }
-            return apiService!!
+            return apiService
         }
     }
 }
